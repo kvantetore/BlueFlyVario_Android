@@ -1,3 +1,9 @@
+#ant settings
 local.properties
+
+#build outputs
 out
+
+#intellij files
 .idea
+*.iml
