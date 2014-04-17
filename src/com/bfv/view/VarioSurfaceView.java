@@ -136,6 +136,9 @@ public class VarioSurfaceView extends SurfaceView implements Runnable, SurfaceHo
         this.saveViewsToXML(false, defaultFileName);
     }
 
+    public FieldManager getFieldManager() {
+        return fieldManager;
+    }
 
     public void scheduleSetUpData() {
         Log.i("BFV", "ScheduleSetUpData " + running);

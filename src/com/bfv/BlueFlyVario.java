@@ -110,12 +110,14 @@ public class BlueFlyVario extends MapActivity {
     private MapViewManager mapViewManager;
     public boolean doubleBackToExitPressedOnce;
 
+    //Pebble
+    PebbleService pebbleService;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (D) Log.e(TAG, "+++ ON CREATE +++");
-
 
         blueFlyVario = this;
 
@@ -185,6 +187,9 @@ public class BlueFlyVario extends MapActivity {
         varioSurface.setZOrderOnTop(true);
         varioSurface.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
+        pebbleService = new PebbleService(this, varioService, varioSurface.getFieldManager());
+        pebbleService.start();
+        pebbleService.connect();
 
         //initialize the map
 
@@ -246,9 +251,11 @@ public class BlueFlyVario extends MapActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        pebbleService.start();
+        pebbleService.connect();
+
         Log.e(TAG, "++ ON START ++");
-
-
     }
 
     @Override
@@ -279,7 +286,6 @@ public class BlueFlyVario extends MapActivity {
             varioSurface.onResumeVarioSurfaceView();
         }
         this.doubleBackToExitPressedOnce = false;
-
     }
 
 
@@ -290,15 +296,17 @@ public class BlueFlyVario extends MapActivity {
             varioSurface.onPauseVarioSurfaceView();
         }
 
-
         if (D) Log.e(TAG, "- ON PAUSE -");
     }
 
     @Override
     public void onStop() {
-        super.onStop();
+        pebbleService.disconnect();
+        pebbleService.stop();
+
         if (D) Log.e(TAG, "-- ON STOP --");
 
+        super.onStop();
     }
 
     @Override
